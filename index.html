@@ -1,0 +1,115 @@
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous">
+</script>
+<link rel="stylesheet" href="https://unpkg.com/chota@latest">
+<style>
+.wrapper {
+    width: 800px;
+    margin: 50px auto 0;
+    padding: 60px 30px;
+    border: 1px solid #000;
+}
+
+.wrapper__title {
+    text-transform: capitalize;
+    margin: 0 0 40px;
+}
+
+.calculator__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 30px;
+}
+
+.calculator__row:last-child {
+    margin-bottom: 0;
+}
+
+.calculator__row label {
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.calculator__bill {
+    width: 50%;
+}
+
+.calculator__tip {
+    width: 60%;
+}
+
+.calculator__info {
+    text-transform: capitalize;
+    margin: 0;
+}
+</style>
+<div class="wrapper">
+		<form class="calculator">
+				<div class="calculator__row row">
+						<label for="bill">enter the bill amount for your meal: $</label>
+						<input type="text" id="bill" class="calculator__bill" value="5" required/>
+				</div>
+				<div class="calculator__row row">
+						<label for="tip">Number of bedrooms: <span class="tip-amount">0</span></label>
+						<input type="range" min="0" max="10" value="0" step="1" class="calculator__tip" id="bedrooms" required/>
+				</div>
+				<div class="calculator__row row">
+						<label for="tip">Number of bathrooms: <span class="tip-amount">0</span></label>
+						<input type="range" min="0" max="10" value="0" step="1" class="calculator__tip" id="bathrooms" required/>
+				</div>
+				<div class="calculator__row row">
+						<h2 class="calculator__info">Estimated Cost: <span class="calculator__result"></span></h2>
+				</div>
+		</form>
+</div>
+<script>
+$(function () {
+
+
+    // VARIABLES
+    // ----------------------------------------------------------
+
+    var pricePerBathroom = 20;
+    var pricePerBedroom = 10;
+    var amount, percent, result;
+    var calculator = $('.calculator');
+    var calculatorBill = calculator.find('.calculator__bill');
+    var calculatorTip = calculator.find('.calculator__tip');
+    var calculatorResult = calculator.find('.calculator__result');
+    var tipAmount = calculator.find('.tip-amount');
+
+
+    // INIT BILL
+    // ----------------------------------------------------------
+
+    $(window).on('DOMContentLoaded', function () {
+        amount = calculatorBill.val() * 1;
+        percent = calculatorTip.val() * 1;
+        result = amount + amount * ( percent / 100 );
+        calculatorResult.text( result.toFixed(2) + '$' );
+    });
+
+
+    // RANGE FUNCTION
+    // ----------------------------------------------------------
+
+    calculatorTip.on('change', function () {
+
+        if ( calculatorBill.val() === '' || isNaN( calculatorBill.val() ) ) {
+            alert('Enter bill amount, please!')
+        } else {
+            amount = calculatorBill.val() * 1;
+        }
+
+        tipAmount.text( calculatorTip.val());
+        percent = calculatorTip.val() * 1;
+        result = amount + amount * ( percent / 100 );
+        calculatorResult.text( '$' + result.toFixed(2) );
+    });
+
+});
+</script>
+
