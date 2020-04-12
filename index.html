@@ -5,17 +5,10 @@
 </script>
 <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 <style>
-.wrapper {
-    width: 800px;
-    margin: 50px auto 0;
-    padding: 60px 30px;
-    border: 1px solid #000;
-}
-
-.wrapper__title {
-    text-transform: capitalize;
-    margin: 0 0 40px;
-}
+	.calculator {
+		text-transform: uppercase;
+		font-weight: 400;
+	}
 
 .calculator__row {
     display: flex;
@@ -28,10 +21,6 @@
     margin-bottom: 0;
 }
 
-.calculator__row label {
-    text-transform: capitalize;
-    font-weight: 700;
-}
 
 .calculator__bill {
     width: 50%;
@@ -40,28 +29,57 @@
 .calculator__tip {
     width: 60%;
 }
-
-.calculator__info {
-    text-transform: capitalize;
-    margin: 0;
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  background: #a7a7a7;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  padding: 0 !important;
+  margin-top: 10px;
 }
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #6ebfef;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #6ebfef;
+  cursor: pointer;
+}
+input.slider:focus {
+	border-color: #6ebfef !important;
+    -webkit-box-shadow: 0 0 1px #6ebfef !important;
+    box-shadow: 0 0 1px #6ebfef !important;
+}
+
 </style>
-<div class="wrapper">
+<div class="card">
 		<form class="calculator">
 				<div class="calculator__row row">
-						<label for="bill">enter the bill amount for your meal: $</label>
-						<input type="text" id="bill" class="calculator__bill" value="5" required/>
+						<label for="tip">Bedrooms: <span class="slider-val">0</span></label>
+						<input type="range" min="0" max="10" value="0" step="1" class="slider" id="bedrooms" required/>
 				</div>
 				<div class="calculator__row row">
-						<label for="tip">Number of bedrooms: <span class="tip-amount">0</span></label>
-						<input type="range" min="0" max="10" value="0" step="1" class="calculator__tip" id="bedrooms" required/>
+						<label for="tip">Bathrooms: <span class="slider-val">0</span></label>
+						<input type="range" min="0" max="10" value="0" step="1" class="slider" id="bathrooms" required/>
 				</div>
 				<div class="calculator__row row">
-						<label for="tip">Number of bathrooms: <span class="tip-amount">0</span></label>
-						<input type="range" min="0" max="10" value="0" step="1" class="calculator__tip" id="bathrooms" required/>
-				</div>
-				<div class="calculator__row row">
-						<h2 class="calculator__info">Estimated Cost: <span class="calculator__result"></span></h2>
+						<p class="calculator__info">Estimated Cost: <span class="calculator__result"></span></p>
 				</div>
 		</form>
 </div>
@@ -74,40 +92,37 @@ $(function () {
 
     var pricePerBathroom = 20;
     var pricePerBedroom = 10;
-    var amount, percent, result;
+    
     var calculator = $('.calculator');
     var calculatorBill = calculator.find('.calculator__bill');
-    var calculatorTip = calculator.find('.calculator__tip');
+    var slider = calculator.find('.slider');
     var calculatorResult = calculator.find('.calculator__result');
     var tipAmount = calculator.find('.tip-amount');
+
+    var bedrooms = $('#bedrooms');
+    var bathrooms = $('#bathrooms');
+    var totalAmount = 0;
 
 
     // INIT BILL
     // ----------------------------------------------------------
 
-    $(window).on('DOMContentLoaded', function () {
-        amount = calculatorBill.val() * 1;
-        percent = calculatorTip.val() * 1;
-        result = amount + amount * ( percent / 100 );
-        calculatorResult.text( result.toFixed(2) + '$' );
-    });
+    
 
 
     // RANGE FUNCTION
     // ----------------------------------------------------------
 
-    calculatorTip.on('change', function () {
+    slider.on('change', function () {
 
-        if ( calculatorBill.val() === '' || isNaN( calculatorBill.val() ) ) {
-            alert('Enter bill amount, please!')
-        } else {
-            amount = calculatorBill.val() * 1;
-        }
+        var bedroomCount = bedrooms.val();
+        var bathroomCount = bathrooms.val();
 
-        tipAmount.text( calculatorTip.val());
-        percent = calculatorTip.val() * 1;
-        result = amount + amount * ( percent / 100 );
-        calculatorResult.text( '$' + result.toFixed(2) );
+        totalAmount = bedroomCount * pricePerBedroom + bathroomCount * pricePerBathroom;
+
+        $(this).siblings('label').find('.slider-val').text($(this).val());
+       
+        calculatorResult.text( '£' + totalAmount.toFixed(2) );
     });
 
 });
