@@ -39,7 +39,7 @@
   -webkit-transition: .2s;
   transition: opacity .2s;
   padding: 0 !important;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .slider:hover {
@@ -49,22 +49,25 @@
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 25px;
-  height: 25px;
+  width: 18px;
+  height: 18px;
   background: #6ebfef;
   cursor: pointer;
+  border-radius: 510%;
+  box-shadow: 0 0 0 10px rgba(100, 100, 100, 0.15)
 }
 
 .slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
+  width: 18px;
+  height: 18px;
   background: #6ebfef;
   cursor: pointer;
+  border-radius: 510%;
 }
 input.slider:focus {
-	border-color: #6ebfef !important;
-    -webkit-box-shadow: 0 0 1px #6ebfef !important;
-    box-shadow: 0 0 1px #6ebfef !important;
+	border-color: #a7a7a7 !important;
+    -webkit-box-shadow: 0 0 1px #a7a7a7 !important;
+    box-shadow: 0 0 1px #a7a7a7 !important;
 }
 
 </style>
@@ -113,7 +116,7 @@ $(function () {
     // RANGE FUNCTION
     // ----------------------------------------------------------
 
-    slider.on('change', function () {
+    slider.on('input', function () {
 
         var bedroomCount = bedrooms.val();
         var bathroomCount = bathrooms.val();
